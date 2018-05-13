@@ -35,6 +35,14 @@ class Board extends React.Component {
   }
 }
 
+function Toogle(props) {
+  return (
+    <button className="toogle" onClick={props.onClick}>
+      {props.ascendingSort ? 'switch to descending' : 'switch to ascending'}
+    </button>
+  );
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +53,7 @@ class Game extends React.Component {
       }],
       xIsNext: true,
       currentId: 0,
+      ascendingSort: true,
     };
   }
 
@@ -63,6 +72,11 @@ class Game extends React.Component {
         currentId: history.length,
       });
     }
+  }
+
+  handleToogleClick() {
+    const ascendingSort = this.state.ascendingSort;
+    this.setState({ascendingSort: !ascendingSort});
   }
 
   getColRowFromIndex(i) {
@@ -116,7 +130,8 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <Toogle ascendingSort={this.state.ascendingSort} onClick={() => this.handleToogleClick()} />
+          <ol>{this.state.ascendingSort ? moves : moves.reverse()}</ol>
         </div>
       </div>
     );
